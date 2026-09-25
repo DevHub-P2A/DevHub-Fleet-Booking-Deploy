@@ -1,4 +1,14 @@
 services:
+  test-db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: test-db
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Test_Passw0rd!
+    ports:
+      - "1433:1433"
+
   ml-model:
     image: ghcr.io/devhub-p2a/devhub-fleet-booking-ml:latest
     container_name: ml-model
@@ -10,7 +20,10 @@ services:
     image: ghcr.io/devhub-p2a/devhub-fleet-booking-mvc:latest
     container_name: mvc-app
     restart: unless-stopped
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=test-db;Database=BUA_ProjectDB;User Id=sa;Password=Test_Passw0rd!;TrustServerCertificate=True
     ports:
       - "8080:8080"
     depends_on:
       - ml-model
+      - test-db
