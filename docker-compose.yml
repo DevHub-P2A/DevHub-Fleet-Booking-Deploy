@@ -27,3 +27,18 @@ services:
     depends_on:
       - ml-model
       - test-db
+      
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma-data:/app/data
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mvc-app
+      - ml-model
+
+volumes:
+  uptime-kuma-data:
