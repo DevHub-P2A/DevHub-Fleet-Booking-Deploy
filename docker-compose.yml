@@ -21,7 +21,7 @@ services:
     container_name: mvc-app
     restart: unless-stopped
     environment:
-      - ConnectionStrings__DefaultConnection=Server=test-db;Database=BUA_ProjectDB;User Id=sa;Password=Test_Passw0rd!;TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=Server=test-db;Database=BUA_ProjectDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
     ports:
       - "8080:8080"
     depends_on:
