@@ -1,14 +1,4 @@
 services:
-  test-db:
-    image: mcr.microsoft.com/azure-sql-edge:latest
-    container_name: test-db
-    restart: unless-stopped
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
-    ports:
-      - "1433:1433"
-
   ml-model:
     image: ghcr.io/devhub-p2a/devhub-fleet-booking-ml:latest
     container_name: ml-model
@@ -21,24 +11,8 @@ services:
     container_name: mvc-app
     restart: unless-stopped
     environment:
-      - ConnectionStrings__DefaultConnection=Server=test-db;Database=BUA_ProjectDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
     ports:
       - "8080:8080"
     depends_on:
       - ml-model
-      - test-db
-      
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    restart: unless-stopped
-    volumes:
-      - uptime-kuma-data:/app/data
-    ports:
-      - "3001:3001"
-    depends_on:
-      - mvc-app
-      - ml-model
-
-volumes:
-  uptime-kuma-data:
