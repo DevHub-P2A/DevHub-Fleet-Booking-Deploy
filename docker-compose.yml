@@ -18,37 +18,7 @@ services:
       - ml-model
 
   uptime-kuma:
-    image: louislam/uptime-kuma:1   # change to the tag from step 1
-    container_name: uptime-kuma
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    volumes:
-      - uptime-kuma:/app/data
-
-volumes:
-  uptime-kuma:
-    external: trueservices:
-  ml-model:
-    image: ghcr.io/devhub-p2a/devhub-fleet-booking-ml:latest
-    container_name: ml-model
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-
-  mvc-app:
-    image: ghcr.io/devhub-p2a/devhub-fleet-booking-mvc:latest
-    container_name: mvc-app
-    restart: unless-stopped
-    environment:
-      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING:?set DB_CONNECTION_STRING in ~/deploy/.env}
-    ports:
-      - "8080:8080"
-    depends_on:
-      - ml-model
-
-  uptime-kuma:
-    image: louislam/uptime-kuma:1   
+    image: louislam/uptime-kuma:1
     container_name: uptime-kuma
     restart: unless-stopped
     ports:
